@@ -1,0 +1,56 @@
+---
+kind: pipeline
+name: Build
+trigger:
+  branch:
+    - master
+  event:
+    - push
+
+steps:
+- name: Build
+  image: plugins/docker
+  settings:
+    repo: keymetrics/pm2-io-cpu-search
+    tags:
+    - latest
+    - "${DRONE_COMMIT_SHA}"
+    password:
+      from_secret: docker_password
+    username:
+      from_secret: docker_username
+
+- name: Generate infrastructure PR
+  pull: always
+  image: keymetrics/drone-plugin-auto-pr
+  settings:
+    files:
+    - jobs/api.nomad
+    message: "chore: update cpu-search job"
+    owner: keymetrics
+    regex: "keymetrics/pm2-io-cpu-search:([A-Za-z0-9]+)"
+    repository: infrastructure
+  environment:
+    GITHUB_OAUTH_TOKEN:
+      from_secret: github_token
+
+---
+kind: secret
+name: docker_username
+get:
+  path: secret/drone/docker
+  name: username
+
+---
+kind: secret
+name: docker_password
+get:
+  path: secret/drone/docker
+  name: password
+
+---
+kind: secret
+name: github_token
+get:
+  path: secret/drone/github
+  name: token

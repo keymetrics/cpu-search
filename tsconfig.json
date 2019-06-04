@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "build/src",
+    "rootDirs": ["."],
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "declaration": true,
+    "importHelpers": true,
+    "inlineSourceMap": true,
+    "traceResolution": false,
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "allowJs": false,
+    "lib" : [
+      "es2017"
+    ],
+    "typeRoots" : ["./node_modules/@types"],
+    "baseUrl": "." // required for "paths"
+  },
+  "include": [
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": false
+}
